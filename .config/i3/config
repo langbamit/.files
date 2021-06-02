@@ -35,13 +35,17 @@ for_window [class=".*"] title_format "<b>%title</b>"
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l dim --no-fork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l dim 
 
-smart_gaps on
+# smart_gaps inverse_outer
 gaps inner 10
-gaps outer -10
+gaps outer 10
+gaps top 45
+gaps bottom -10
+gaps left -10
+gaps right -10
 
-border_radius 2
+border_radius 20
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -71,10 +75,10 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d \
   exec rofi \
   --no-startup-id \
-  -show combi -terminal urxvtc -hide-scrollbar true  \
+  -show combi -terminal alacritty -hide-scrollbar true  \
   -kb-mode-next      Alt+Tab \
   -kb-mode-previous  Alt+ISO_Left_Tab \
-  -theme solarized \
+  -theme ~/.config/rofi/launcher.rasi \
   -font      "Roboto Slab 12"   -opactiy 80q
 #   -line-margin 0 -lines 20 -eh 1 -width 40 -bw 3 \
 
@@ -142,28 +146,28 @@ set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
 
 
 
@@ -172,28 +176,29 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e \
+  exec ~/.config/rofi/scripts/powermenu.sh -location center
+
+
+bindsym $mod+Shift+s \
+  exec SUDO_ASKPASS=~/.config/rofi/scripts/askpass.sh ~/.config/rofi/scripts/servicemanager.sh
 
 
 for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1820 880, move position 50 95, move scratchpad
+for_window [class="Skype"] move container to workspace 3
 
 # Scratchpad
 bindsym $mod+grave [con_mark="s1"] scratchpad show
 bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Autostart applications
-exec --no-startup-id alacritty --class='Scratchpad' -e tmux new -A -t DEV
+exec_always --no-startup-id alacritty --class='Scratchpad' -e tmux new -A -t DEV
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
 exec --no-startup-id betterlockscreen -w dim
-exec --no-startup-id picom 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-
-
-
-
-
+exec --no-startup-id picom --experimental-backends 
+exec_always --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
 
 
 
@@ -233,3 +238,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
