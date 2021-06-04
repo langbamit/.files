@@ -186,7 +186,7 @@ bindsym $mod+Shift+s \
 
 
 for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1820 880, move position 50 95, move scratchpad
-for_window [class="Skype"] move container to workspace 3
+assign [class="Skype"] $ws3
 
 # Scratchpad
 bindsym $mod+grave [con_mark="s1"] scratchpad show
@@ -197,7 +197,7 @@ exec_always --no-startup-id alacritty --class='Scratchpad' -e tmux new -A -t DEV
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
 exec --no-startup-id betterlockscreen -w dim
-exec --no-startup-id picom --experimental-backends 
+exec_always --no-startup-id picom --experimental-backends
 exec_always --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
 
 
