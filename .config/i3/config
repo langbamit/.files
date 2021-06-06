@@ -26,7 +26,7 @@ default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
 
-workspace_auto_back_and_forth yes
+# workspace_auto_back_and_forth yes
 
 for_window [class=".*"] title_format "<b>%title</b>"
 
@@ -45,7 +45,7 @@ gaps bottom -10
 gaps left -10
 gaps right -10
 
-border_radius 20
+#  border_radius 20
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -185,19 +185,21 @@ bindsym $mod+Shift+s \
   exec SUDO_ASKPASS=~/.config/rofi/scripts/askpass.sh ~/.config/rofi/scripts/servicemanager.sh
 
 
-for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1820 880, move position 50 95, move scratchpad
+for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1880 1000, move position 20 55, move scratchpad
 assign [class="Skype"] $ws3
+assign [class="firefox"] $ws2
+assign [class="^Code$"] $ws1
 
 # Scratchpad
 bindsym $mod+grave [con_mark="s1"] scratchpad show
 bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Autostart applications
-exec_always --no-startup-id alacritty --class='Scratchpad' -e tmux new -A -t DEV
+exec_always --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && tmux new -A -t DEV'
 exec --no-startup-id ibus-daemon -drx
 exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
 exec --no-startup-id betterlockscreen -w dim
-exec_always --no-startup-id picom --experimental-backends
+exec_always --no-startup-id picom -b
 exec_always --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
 
 

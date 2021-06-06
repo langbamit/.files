@@ -49,7 +49,7 @@ set undoreload=1000    " number of lines to save for undo
 
 set laststatus=0                        " Always display the status line
 set number relativenumber               " Line numbers
-set cursorline                          " Enable highlighting of the current line
+" set cursorline                          " Enable highlighting of the current line
 set background=dark                     " tell vim what the background color looks like
 set showtabline=4                       " Always show tabs
 set noshowmode                          " We don't need to see things like -- INSERT -- anymore
@@ -62,7 +62,7 @@ set clipboard=unnamedplus               " Copy paste between vim and everything 
 " set autochdir                           " Your working directory will always be the same as your working directory
 set termguicolors
 set textwidth=80
-set colorcolumn=80
+set colorcolumn=99999999
 set guifont=FiraCodeNerdFont
 let g:neovide_transparency=1
 
@@ -92,3 +92,8 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+""" Netrw
+let g:netrw_banner = 0        " no banner
+let g:netrw_liststyle = 3     " tree style listing
+let g:netrw_dirhistmax = 0    " no netrw history
