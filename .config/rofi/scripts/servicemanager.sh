@@ -19,26 +19,11 @@ session=$(echo $line | cut -f1 -d ' ')
 unit=$(echo $line | cut -f2 -d ' ')
 
 commands="
-status
 start
 stop
 restart
-kill
-reload
-reload-or-restart
 enable
 disable
-cancel
-reset-failed
-isolate
-condreload
-revert
-condrestart
-edit
-exit
-force-reload
-mask
-reenable
 "
 
 cmd=$(rofi -dmenu "$@" <<<"${commands[@]}")
