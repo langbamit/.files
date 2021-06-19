@@ -58,13 +58,22 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 capabilities.experimental = {}
 capabilities.experimental.hoverActions = true
 
-lsp.rust_analyzer.setup({capabilities = capabilities, on_attach = on_attach})
-
 local function setup_rust_tools()
     require'rust-tools'.setup({
         autoSetHints = true,
         runnables = {use_telescope = true},
-        inlay_hints = {show_parameter_hints = true}
+        inlay_hints = {show_parameter_hints = true},
+        server = {
+            cmd = {"rustup", "run", "nightly", "rust-analyzer"},
+            capabilities = capabilities, on_attach = on_attach,
+            settings = {
+                ["rust-analyzer"] = {
+                    checkOnSave = {
+                        overrideCommand = {Mlem.paths.join {Mlem.paths.home, "rustc_codegen_cranelift/build/cargo.sh"}, "check", "--message-format=json"}
+                    }
+                }
+            }
+        }
     })
     require'rust-tools-debug'.setup()
 end

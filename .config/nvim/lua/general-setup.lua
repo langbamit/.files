@@ -44,7 +44,6 @@ opt.undofile = true
 opt.undodir = Mlem.paths.undo
 
 opt.termguicolors = true
-vim.cmd 'colorscheme dracula'
 
 vim.g.mapleader = ' '
 vim.keymap.nnoremap{' ', ''}

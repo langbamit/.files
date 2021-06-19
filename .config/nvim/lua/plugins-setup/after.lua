@@ -1,6 +1,7 @@
 local vim = vim
 local g, cmd, keymap = vim.g, vim.cmd, vim.keymap
 
+vim.cmd 'colorscheme dracula'
 
 -- Dashboard
 keymap.nnoremap {'<leader>ss', with_cmd 'SessionSave'}

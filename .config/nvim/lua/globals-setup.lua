@@ -10,12 +10,13 @@ local create_missing_dirs = function()
     local session_path = join {cache_path, 'session'}
     local spell_path = join {cache_path, 'spell'}
     local undo_path = join {home, '.undodir'}
-    globals.home = home
-    globals.path_sep = sep
 
     local paths = {session = session_path, spell = spell_path, undo = undo_path}
 
     for _, p in pairs(paths) do if vim.fn.isdirectory(p) == 0 then os.execute('mkdir -p ' .. p) end end
+    paths.home = home
+    paths.sep = sep
+    paths.join = join
     globals.paths = paths
 end
 create_missing_dirs()

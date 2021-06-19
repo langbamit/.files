@@ -1,7 +1,7 @@
 require('plugins-setup.before')
 -- LuaFormatter off
 vim.tbl_map(require('paq-nvim').paq, {
-    'savq/paq-nvim'; -- Manager itself to avoid clean
+    {'savq/paq-nvim', opt = true}; -- Manager itself to avoid clean
     {'dracula/vim', as = 'dracula'};
 
     --- Basic
