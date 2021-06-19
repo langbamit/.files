@@ -18,8 +18,7 @@ line=$(rofi -dmenu "$@" <<<$units )
 session=$(echo $line | cut -f1 -d ' ')
 unit=$(echo $line | cut -f2 -d ' ')
 
-commands="
-start
+commands="start
 stop
 restart
 enable
@@ -27,13 +26,14 @@ disable
 "
 
 cmd=$(rofi -dmenu "$@" <<<"${commands[@]}")
-echo $cmd
-echo $unit
 function ctl {
     if [[ "$session" == "system" ]]; then
         sudo -A systemctl "$@"
     else
         systemctl --user "$@"
+    fi
+    if [ "$unit" == "bluetooth.service" ] && [ "$cmd" == "start" ]; then
+        exec blueman-applet &
     fi
 }
 

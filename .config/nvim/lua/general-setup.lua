@@ -1,3 +1,4 @@
+local vim = vim
 local opt = vim.opt
 opt.clipboard = "unnamedplus"
 opt.laststatus = 2
@@ -26,14 +27,16 @@ opt.whichwrap = '[,]'
 opt.showmode = false
 opt.showmatch = true
 opt.matchtime = 5
+opt.completeopt = {'menuone', 'noinsert', 'noselect'}
 opt.shortmess:append('cI')
 opt.hlsearch = true
 opt.pumblend = 10
-opt.signcolumn = 'number'
+-- opt.signcolumn = 'number'
 opt.showtabline = 2
 opt.timeoutlen = 500
 opt.ttimeoutlen = -1
 opt.sessionoptions:remove('folds')
+opt.sessionoptions:append('globals')
 opt.showbreak = ' ↳  '
 opt.listchars = 'tab:→ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨'
 
@@ -42,4 +45,9 @@ opt.undodir = Mlem.paths.undo
 
 opt.termguicolors = true
 vim.cmd 'colorscheme dracula'
+
+vim.g.mapleader = ' '
+vim.keymap.nnoremap{' ', ''}
+vim.keymap.xnoremap{' ', ''}
+
 

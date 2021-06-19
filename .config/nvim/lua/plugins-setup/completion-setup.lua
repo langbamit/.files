@@ -20,7 +20,8 @@ require'compe'.setup {
         nvim_lsp = true,
         nvim_lua = true,
         ultisnips = true,
-        treesitter = true
+        treesitter = true,
+        tabnine = true
     }
 }
 
@@ -91,8 +92,8 @@ end
 vim.keymap.inoremap {'<C-Space>', "compe#complete()", expr = true}
 vim.keymap.inoremap {'<CR>', "v:lua.Mlem.completion_confirm()", expr = true}
 vim.keymap.inoremap {'<C-e>', "compe#close('<C-e>')", expr = true}
-vim.keymap.inoremap {'<C-f>', "compe#scroll({ 'delta': +4 })", expr = true}
-vim.keymap.inoremap {'<C-d>', "compe#scroll({ 'delta': -4 })", expr = true}
+-- vim.keymap.inoremap {'<C-f>', "compe#scroll({ 'delta': +4 })", expr = true}
+-- vim.keymap.inoremap {'<C-d>', "compe#scroll({ 'delta': -4 })", expr = true}
 
 vim.g.UltiSnipsExpandTrigger = "<C-j>"
 -- g.UltiSnipsJumpForwardTrigger = "<C-j>"

@@ -35,3 +35,8 @@ globals.banner = {
 }
 
 _G.Mlem = globals
+function _G.dump(...)
+    local objects = vim.tbl_map(vim.inspect, {...})
+    print(unpack(objects))
+end
+function _G.with_cmd(rhs) return '<cmd>' .. rhs .. '<cr>' end

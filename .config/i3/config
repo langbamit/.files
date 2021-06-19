@@ -19,7 +19,7 @@ set $mod Mod4
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 # font pango:DejaVu Sans Mono 10
 # font pango:IBM Plex Mono 11
-font pango:Roboto 11
+font pango:Roboto 13
 
 title_align center
 default_border pixel 1
