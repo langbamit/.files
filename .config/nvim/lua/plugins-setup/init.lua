@@ -50,7 +50,7 @@ vim.tbl_map(require('paq-nvim').paq, {
 
     --- Snippets
     'hrsh7th/vim-vsnip';
-    'rsh7th/vim-vsnip-integ';
+    'hrsh7th/vim-vsnip-integ';
 
     --- Telescope
     'nvim-lua/popup.nvim';
