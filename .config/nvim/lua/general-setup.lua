@@ -49,4 +49,21 @@ vim.g.mapleader = ' '
 vim.keymap.nnoremap{' ', ''}
 vim.keymap.xnoremap{' ', ''}
 
+vim.keymap.nnoremap {'<C-h>', '<C-w>h'}
+vim.keymap.nnoremap {'<C-j>', '<C-w>j'}
+vim.keymap.nnoremap {'<C-k>', '<C-w>k'}
+vim.keymap.nnoremap {'<C-l>', '<C-w>l'}
 
+vim.keymap.nnoremap {'<Tab>', ':bnext<CR>'}
+vim.keymap.nnoremap {'<S-Tab>', ':bprevious<CR>'}
+
+vim.keymap.inoremap {'jk', '<esc>'}
+vim.keymap.inoremap {'kj', '<esc>'}
+
+vim.keymap.nnoremap {'<esc>', ':noh<return><esc>', silent = true}
+
+
+vim.keymap.vnoremap { '<', '<gv'}
+vim.keymap.vnoremap { '>', '>gv'}
+-- start terminal in insert mode
+vim.cmd [[ au BufEnter * if &buftype == 'terminal' | :startinsert | endif ]]

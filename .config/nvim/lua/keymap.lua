@@ -228,4 +228,3 @@ function keymap.tnoremap(opts)
   return make_mapper('t', { noremap = true }, opts)
 end
 vim.keymap = keymap
-return keymap
