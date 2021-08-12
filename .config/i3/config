@@ -25,6 +25,9 @@ title_align center
 default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
+workspace_layout default
+# Set swap caps and escape
+exec setxkbmap -option caps:swapescape
 
 # workspace_auto_back_and_forth yes
 
@@ -35,15 +38,15 @@ for_window [class=".*"] title_format "<b>%title</b>"
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l dim 
+exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l dim
 
 # smart_gaps inverse_outer
-gaps inner 10
-gaps outer 10
-gaps top 45
-gaps bottom -10
-gaps left -10
-gaps right -10
+gaps inner 0
+gaps outer 5
+gaps top 55
+# gaps bottom -10
+# gaps left -10
+# gaps right -10
 
 #  border_radius 20
 
@@ -66,7 +69,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl -c backlight se
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty -e tmux
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -185,10 +188,17 @@ bindsym $mod+Shift+s \
   exec SUDO_ASKPASS=~/.config/rofi/scripts/askpass.sh ~/.config/rofi/scripts/servicemanager.sh
 
 
-for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1880 1000, move position 20 55, move scratchpad
 assign [class="Skype"] $ws3
 assign [class="firefox"] $ws2
+assign [class="Google-chrome"] $ws2
 assign [class="^Code$"] $ws1
+
+for_window [class="Google-chrome" window_role="pop-up"] floating enable border normal
+for_window [class="firefox" window_role="About"] floating enable border normal
+for_window [class="firefox" instance="Devtools"] floating enable border normal
+for_window [class="xdman-Main"] floating enable
+
+for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1880 1000, move position 20 55, move scratchpad
 
 # Scratchpad
 bindsym $mod+grave [con_mark="s1"] scratchpad show
@@ -196,19 +206,25 @@ bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Autostart applications
 exec_always --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && tmux new -A -t DEV'
-exec --no-startup-id ibus-daemon -drx
-exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
-exec --no-startup-id betterlockscreen -w dim
 exec_always --no-startup-id picom -b
 exec_always --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
+exec_always --no-startup-id i3-auto-layout
+exec --no-startup-id ibus-daemon -drx
+exec --no-startup-id xdman -m
+exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
+exec --no-startup-id betterlockscreen -w dim
+exec --no-startup-id ~/appImage/pomotroid-0.13.0-linux.AppImage
+
+# Screenshot capturing program:
+exec --no-startup-id flameshot
+
+# Screen annotation tool:
+exec --no-startup-id gromit-mpx
 
 
-
-
-
-
-
-
+bindsym $mod+z exec --no-startup-id gromit-mpx --undo
+bindsym $mod+Delete exec --no-startup-id gromit-mpx --clear
+bindsym $mod+shift+z exec --no-startup-id gromit-mpx --redo
 
 
 

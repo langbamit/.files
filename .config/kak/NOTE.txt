@@ -1,0 +1,7 @@
+Run this first:
+ln -sv (dirname (which kak))/../share/kak/autoload ~/.config/kak/autoload/default
+
+Install editorconfig: 
+pacman -S editorconfig-core-c
+
+pacman -S jq  
