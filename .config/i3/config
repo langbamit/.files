@@ -25,11 +25,13 @@ title_align center
 default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
-workspace_layout default
 # Set swap caps and escape
-exec setxkbmap -option caps:swapescape
+# exec setxkbmap -option caps:swapescape
 
 # workspace_auto_back_and_forth yes
+workspace_layout tabbed
+
+focus_follows_mouse no
 
 for_window [class=".*"] title_format "<b>%title</b>"
 
@@ -189,14 +191,18 @@ bindsym $mod+Shift+s \
 
 
 assign [class="Skype"] $ws3
-assign [class="firefox"] $ws2
-assign [class="Google-chrome"] $ws2
-assign [class="^Code$"] $ws1
+assign [class="firefox"] $ws1
+assign [class="Google-chrome"] $ws1
+assign [class="^Code$"] $ws2
+assign [class="GitKraken"] $ws2
 
 for_window [class="Google-chrome" window_role="pop-up"] floating enable border normal
 for_window [class="firefox" window_role="About"] floating enable border normal
 for_window [class="firefox" instance="Devtools"] floating enable border normal
 for_window [class="xdman-Main"] floating enable
+for_window [class="game.exe"] floating enable border normal
+for_window [class="glide-init.exe"] floating enable border normal
+for_window [class="d2stats.exe"] floating enable border normal
 
 for_window [instance="Scratchpad"] mark "s1", floating enable, resize set 1880 1000, move position 20 55, move scratchpad
 
@@ -205,11 +211,13 @@ bindsym $mod+grave [con_mark="s1"] scratchpad show
 bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Autostart applications
-exec_always --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && tmux new -A -t DEV'
-exec_always --no-startup-id picom -b
-exec_always --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
+# exec_always --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && tmux new -A -t DEV'
+exec --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && zellij'
+exec --no-startup-id picom -b
+exec --no-startup-id "sh -c 'sleep 3; $HOME/.config/polybar/launch.sh'"
 exec_always --no-startup-id i3-auto-layout
 exec --no-startup-id ibus-daemon -drx
+exec --no-startup-id blueman-applet
 exec --no-startup-id xdman -m
 exec --no-startup-id feh --bg-fill ~/wallpapers/bg.jpg
 exec --no-startup-id betterlockscreen -w dim
@@ -226,6 +234,17 @@ bindsym $mod+z exec --no-startup-id gromit-mpx --undo
 bindsym $mod+Delete exec --no-startup-id gromit-mpx --clear
 bindsym $mod+shift+z exec --no-startup-id gromit-mpx --redo
 
+set $mode_launcher Launch: [t]erminal-floating show[k]eys
+mode "$mode_launcher" {
+        bindsym t exec --no-startup-id alacritty --class='Scratchpad' -e sh -c 'sleep 0.1 && zellij'
+        bindsym k exec --no-startup-id screenkey -p fixed -g 90%x5%+5%-5% --ignore Caps_Lock
+        # back to normal: Enter or Escape or $mod+o
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+o mode "default"
+}
+
+bindsym $mod+o mode "$mode_launcher"
 
 
 # resize window (you can also use the mouse for that)

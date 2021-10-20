@@ -16,7 +16,7 @@ packer.startup(function(use)
         'Mofiqul/dracula.nvim',
         config = function()
             vim.cmd [[
-                 colorscheme dracula
+                 colorscheme dracula_pro
         ]]
         end,
         disable = not nocode()

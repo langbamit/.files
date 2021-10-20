@@ -5,16 +5,16 @@ set -eo pipefail
 
 
 function user_units {
-    systemctl list-unit-files --user --no-pager --type=service --no-legend | awk '{print "user " $0}'
+    systemctl list-unit-files --user --no-pager --type=service --no-legend | awk '{print "user " $1}'
 }
 
 function system_units {
-    systemctl list-unit-files --no-pager --type=service --no-legend | awk '{print "system " $0}'
+    systemctl list-unit-files --no-pager --type=service --no-legend | awk '{print "system " $1}'
 }
-
+dir="~/.config/rofi"
 units=$(user_units; system_units)
 
-line=$(rofi -dmenu "$@" <<<$units )
+line=$(rofi -theme $dir/servicemanager.rasi -dmenu "$@" <<<$units )
 session=$(echo $line | cut -f1 -d ' ')
 unit=$(echo $line | cut -f2 -d ' ')
 
@@ -22,10 +22,9 @@ commands="start
 stop
 restart
 enable
-disable
-"
+disable"
 
-cmd=$(rofi -dmenu "$@" <<<"${commands[@]}")
+cmd=$(rofi -theme $dir/servicemanager.rasi -dmenu "$@" <<<"${commands[@]}")
 function ctl {
     if [[ "$session" == "system" ]]; then
         sudo -A systemctl "$@"
@@ -38,5 +37,5 @@ function ctl {
 }
 
 result=$(ctl "$cmd" "$unit")
-notify-send $result
+notify-send "Service $unit: $cmd"
 # rofi -dmenu "$result"

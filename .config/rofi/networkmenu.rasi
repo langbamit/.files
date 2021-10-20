@@ -114,9 +114,8 @@ element-text {
 }
 
 element selected {
-    background-color:               @ac;
     text-color:                     @bg;
-	border:							0px 0px 0px 0px;
+	border:							1px 1px 1px 1px;
     border-radius:                  12px;
     border-color:                  	@ac;
 }

@@ -1,6 +1,5 @@
 declare-option str file_search_command 'fd --type f --follow --hidden'
 
-
 ## Install packages manager
 evaluate-commands %sh{
     plugins="$kak_config/plugins"
@@ -10,7 +9,6 @@ evaluate-commands %sh{
     printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
 }
 plug "https://github.com/andreyorst/plug.kak" noload
-plug "https://github.com/lePerdu/kakboard"
 plug "https://github.com/h-youhei/kakoune-surround" config %{
     declare-user-mode surround
     map global surround s ':surround<ret>' -docstring 'surround'
@@ -28,14 +26,14 @@ plug "https://github.com/andreyorst/smarttab.kak" defer smarttab %{
 
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
-plug "https://github.com/dead10ck/auto-pairs.kak" branch "remove-kcr"  demand auto-pairs %{
+plug "https://github.com/dead10ck/auto-pairs.kak" branch "remove-kcr"  defer auto-pairs %{
     auto-pairs-enable
 }
 
-plug "https://github.com/jbomanson/search-doc.kak" defer search-doc %{
-    # Optional suggestion:
-    alias global sd search-doc
-} demand search-doc
+# plug "https://github.com/jbomanson/search-doc.kak" defer search-doc %{
+#     # Optional suggestion:
+#     alias global sd search-doc
+# } demand search-doc
 
 plug 'https://github.com/delapouite/kakoune-buffers' %{
     map global user b ': enter-user-mode -lock buffers<ret>'   -docstring 'buffers (lock)…'
@@ -58,6 +56,8 @@ plug "https://github.com/andreyorst/fzf.kak" config %{
 } defer fzf-file %{
     set-option global fzf_file_command "%opt{file_search_command}"
     set-option global fzf_highlight_command "bat"
+} defer fzf-grep %{
+    set-option global fzf_grep_command "rg"
 }
 
 evaluate-commands %{
@@ -65,13 +65,40 @@ evaluate-commands %{
       kcr init kakoune
     }
 
+    try %{
+       # ensure we're running under tmux
+       evaluate-commands %sh{
+           [ -n "$TMUX" ] || echo 'fail tmux not detected'
+       }
+
+       define-command tmux-terminal-popup -params 1.. -shell-completion -docstring '
+       tmux-terminal-popup <program> [<arguments>]: create a new terminal as a tmux popup
+       The program passed as argument will be executed in the new terminal' \
+       %{
+           tmux-terminal-impl 'display-popup -w80% -h80% -d #{PWD} -E' %arg{@}
+       }
+
+       alias global popup tmux-terminal-popup
+    } catch %{
+    #    # echo -debug %val{error}
+    }
 
 }
-plug 'https://github.com/alexherbo2/tmux.kak' config %{
-    tmux-integration-enable
-    # connect panel sh
-    # broot --conf '%val{config}/connect/broot.toml'
+
+define-command -override ranger %{
+    connect popup sh -c %{
+        echo $PWD > kkk.txt
+        export RANGER_DIR=/tmp/ranger-dir-$1
+        ranger --choosefiles=/tmp/ranger-files-$1 --choosedir=$RANGER_DIR $([ -f  $RANGER_DIR ] && cat $RANGER_DIR || echo $2)
+        while read f; do
+            kcr -s $KAKOUNE_SESSION -c $KAKOUNE_CLIENT edit $f
+        done < /tmp/ranger-files-$1
+    } -- %val{client_pid} %val{client_env_PWD}
 }
+
+map global user r ':ranger<ret>'
+
+
 
 def load-settings -params 1 %{
     try %{
@@ -155,7 +182,7 @@ set-face global CurWord default,rgba:80808040
 hook global NormalIdle .* %{
     eval -draft %{ try %{
         exec <space><a-i>w <a-k>\A\w+\z<ret>
-add-highlighter -override global/curword regex "\b\Q%val{selection}\E\b" 0:CurWord
+        add-highlighter -override global/curword regex "\b\Q%val{selection}\E\b" 0:CurWord
     } catch %{
         add-highlighter -override global/curword group
     } }
@@ -171,18 +198,9 @@ hook global InsertCompletionShow .* %{ map window insert <tab> <c-n>; map window
 hook global InsertCompletionHide .* %{ unmap window insert <tab> <c-n>; unmap window insert <s-tab> <c-p> }
 
 
-define-command find -menu -params 1 -shell-script-candidates %{ $kak_opt_file_search_command  } %{ edit %arg{1} }
+# define-command find -menu -params 1 -shell-script-candidates %{ $kak_opt_file_search_command  } %{ edit %arg{1} }
 
 define-command mkdir %{ nop %sh{ mkdir -p $(dirname $kak_buffile) } }
-
-define-command write-delete-buffer %{
-    
-}
-
-define-command ide %{
-    exec 
-}
-
 
 # Aliases
 alias global h doc
@@ -205,4 +223,4 @@ map global change-case  u '| kak-subvert ugly <ret>'      -docstring "Ugly_Case"
 # Load local Kakoune config file if it exists
 # ───────────────────────────────────────────
 
-evaluate-commands %sh{ [ -f $kak_config/local.kak ] && echo "source $kak_config/local.kak" }
+# evaluate-commands %sh{ [ -f $kak_config/local.kak ] && echo "source $kak_config/local.kak" }
